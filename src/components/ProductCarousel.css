@@ -1,0 +1,260 @@
+/* ProductCarousel.css */
+:root {
+  --autoplay-duration: 3000ms;
+}
+
+.product-carousel {
+  position: relative;
+  padding: 0 0.5rem;
+}
+
+/* Autoplay progress */
+.product-carousel::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(to right, #e0e7ff, #6366f1, #e0e7ff);
+  border-radius: 3px;
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: 0 0;
+  transition: opacity 0.3s;
+}
+
+.product-carousel.autoplay-active::before {
+  opacity: 0.7;
+  animation: progress-bar var(--autoplay-duration, 3000ms) linear infinite;
+}
+
+.product-carousel.autoplay-paused::before {
+  animation-play-state: paused;
+}
+
+@keyframes progress-bar {
+  0% {
+    transform: scaleX(0);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+/* Tiêu đề danh mục */
+.product-carousel h2 {
+  position: relative;
+  display: inline-block;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #111827;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Xóa gạch chân dưới tiêu đề */
+.product-carousel h2::after {
+  content: none;
+}
+
+/* Navigation buttons */
+.product-swiper .swiper-button-next,
+.product-swiper .swiper-button-prev {
+  color: #6366f1;
+  background-color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.product-swiper .swiper-button-next:after,
+.product-swiper .swiper-button-prev:after {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.product-swiper:hover .swiper-button-next,
+.product-swiper:hover .swiper-button-prev {
+  opacity: 1;
+}
+
+.product-swiper .swiper-button-next:hover,
+.product-swiper .swiper-button-prev:hover {
+  background-color: #f9fafb;
+  transform: scale(1.1);
+}
+
+.product-swiper .swiper-button-disabled {
+  opacity: 0 !important;
+  cursor: default;
+}
+
+/* Pagination */
+.product-swiper .swiper-pagination-bullet {
+  width: 8px;
+  height: 8px;
+  background: #d1d5db;
+  opacity: 0.5;
+  transition: all 0.3s ease;
+}
+
+.product-swiper .swiper-pagination-bullet-active {
+  background: #6366f1;
+  opacity: 1;
+  width: 24px;
+  border-radius: 4px;
+}
+
+/* Slide hover effect */
+.product-slide {
+  transition: transform 0.3s ease;
+}
+
+.product-slide:hover {
+  transform: translateY(-5px);
+}
+
+/* Category title */
+.category-title {
+  text-align: center;
+  position: relative;
+  margin-bottom: 2rem;
+  padding-bottom: 0.5rem;
+  font-weight: 700;
+  color: #111827;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Xóa gạch chân dưới category-title */
+.category-title::after {
+  content: none;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .product-swiper .swiper-button-next,
+  .product-swiper .swiper-button-prev {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .product-swiper .swiper-button-next:after,
+  .product-swiper .swiper-button-prev:after {
+    font-size: 14px;
+  }
+}
+
+/* Add spacing to make pagination visible */
+.product-swiper {
+  padding-bottom: 40px;
+  margin-bottom: 10px;
+}
+
+/* Styling the navigation buttons */
+.product-carousel .swiper-button-next,
+.product-carousel .swiper-button-prev {
+  color: #4f46e5; /* indigo-600 */
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.product-carousel .swiper-button-next:hover,
+.product-carousel .swiper-button-prev:hover {
+  background-color: #ffffff;
+  color: #4338ca; /* indigo-700 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.product-carousel .swiper-button-next:after,
+.product-carousel .swiper-button-prev:after {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Styling the pagination */
+.product-carousel .swiper-pagination {
+  bottom: 0px;
+}
+
+.product-carousel .swiper-pagination-bullet {
+  background-color: #d1d5db; /* gray-300 */
+  opacity: 0.7;
+  transition: all 0.3s ease;
+}
+
+.product-carousel .swiper-pagination-bullet-active {
+  background-color: #4f46e5; /* indigo-600 */
+  opacity: 1;
+}
+
+/* Animation for the slides */
+.product-slide {
+  transition: transform 0.3s ease;
+}
+
+.product-slide:hover {
+  transform: translateY(-5px);
+}
+
+/* Handle responsive behavior */
+@media (max-width: 768px) {
+  .product-carousel .swiper-button-next,
+  .product-carousel .swiper-button-prev {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .product-carousel .swiper-button-next:after,
+  .product-carousel .swiper-button-prev:after {
+    font-size: 14px;
+  }
+}
+
+/* Add spacing to make pagination visible */
+.product-swiper {
+  padding-bottom: 40px;
+  margin-bottom: 10px;
+}
+
+/* Visual indicator for autoplay status */
+.product-carousel.autoplay-active::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(to right, #4f46e5, #a78bfa);
+  z-index: 1;
+  animation: autoplayProgress var(--autoplay-duration) linear infinite;
+  animation-play-state: running;
+  transform-origin: left center;
+}
+
+.product-carousel.autoplay-paused::before {
+  animation-play-state: paused;
+}
+
+@keyframes autoplayProgress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+} 
