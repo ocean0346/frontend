@@ -19,13 +19,20 @@ const SearchBox: React.FC<SearchBoxProps> = ({
 
   const submitHandler = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Submitting search:', searchTerm);
+    console.log('SearchBox: Submit form tìm kiếm, từ khóa gốc:', searchTerm);
     
-    if (searchTerm.trim()) {
+    // Chuẩn hóa từ khóa tìm kiếm, loại bỏ khoảng trắng dư thừa và giữ nguyên ký tự Unicode
+    const trimmedSearchTerm = searchTerm.trim();
+    console.log('SearchBox: Từ khóa sau khi chuẩn hóa:', trimmedSearchTerm);
+    
+    if (trimmedSearchTerm) {
       if (redirect) {
-        navigate(`/search/${searchTerm}`);
+        // Encode URI Component để đảm bảo xử lý đúng ký tự Unicode và ký tự đặc biệt
+        const encodedKeyword = encodeURIComponent(trimmedSearchTerm);
+        console.log('SearchBox: Từ khóa đã encode URI:', encodedKeyword);
+        navigate(`/search/${encodedKeyword}`);
       } else if (setKeyword) {
-        setKeyword(searchTerm);
+        setKeyword(trimmedSearchTerm);
       }
     } else {
       if (redirect) {

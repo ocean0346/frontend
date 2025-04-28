@@ -27,10 +27,19 @@ const Header: React.FC = () => {
 
   // Xử lý tìm kiếm trong header
   const handleHeaderSearch = (keyword: string) => {
-    console.log('Header: Tìm kiếm với từ khóa:', keyword);
-    if (keyword.trim()) {
-      navigate(`/search/${keyword}`);
+    console.log('Header: Nhận từ khóa tìm kiếm từ SearchBox:', keyword);
+    
+    // Chuẩn hóa từ khóa đã được xử lý từ SearchBox
+    // Thường thì SearchBox đã trim rồi, nhưng để đảm bảo chúng ta vẫn thực hiện lần nữa
+    const trimmedKeyword = keyword.trim();
+    
+    if (trimmedKeyword) {
+      // Encode URL để tránh vấn đề với ký tự đặc biệt
+      const encodedKeyword = encodeURIComponent(trimmedKeyword);
+      console.log('Header: Chuyển hướng đến /search/' + encodedKeyword);
+      navigate(`/search/${encodedKeyword}`);
     } else {
+      console.log('Header: Từ khóa trống, chuyển về trang chủ');
       navigate('/');
     }
   };

@@ -34,17 +34,42 @@ API.interceptors.request.use((req) => {
 });
 
 // Product APIs
-export const fetchProducts = async (filters: ProductFilters = {}) => {
+export const fetchProducts = async (filters: ProductFilters = {}, page: number = 1) => {
   // Xây dựng query params từ filters
   const params = new URLSearchParams();
   
-  if (filters.keyword) params.append('keyword', filters.keyword);
+  if (filters.keyword) {
+    // Đảm bảo từ khóa tìm kiếm được encode đúng
+    const encodedKeyword = encodeURIComponent(filters.keyword.trim());
+    console.log('API Request: Từ khóa gốc:', filters.keyword);
+    console.log('API Request: Từ khóa đã encode:', encodedKeyword);
+    params.append('keyword', encodedKeyword);
+  }
+  
   if (filters.category) params.append('category', filters.category);
   if (filters.minPrice !== undefined) params.append('minPrice', filters.minPrice.toString());
   if (filters.maxPrice !== undefined) params.append('maxPrice', filters.maxPrice.toString());
   if (filters.minRating !== undefined) params.append('minRating', filters.minRating.toString());
   
+  // Thêm tham số page
+  params.append('page', page.toString());
+  
+  console.log('API Request: Tìm kiếm sản phẩm với params:', params.toString());
+  
   const { data } = await API.get(`/products?${params.toString()}`);
+  console.log('API Response: Kết quả tìm kiếm:', {
+    total: data.totalProducts,
+    page: data.page,
+    pages: data.pages,
+    products: data.products.length
+  });
+  
+  if (data.products.length > 0) {
+    console.log('API Response: Tên các sản phẩm tìm thấy:', data.products.map((p: any) => p.name).join(', '));
+  } else {
+    console.log('API Response: Không tìm thấy sản phẩm nào phù hợp với từ khóa');
+  }
+  
   return data;
 };
 

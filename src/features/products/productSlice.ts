@@ -48,9 +48,10 @@ const initialState: ProductsState = {
 // Async thunks
 export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
-  async (filters: ProductFilters = {}, { rejectWithValue }) => {
+  async ({ filters = {}, page = 1 }: { filters?: ProductFilters, page?: number }, { rejectWithValue }) => {
     try {
-      return await api.fetchProducts(filters);
+      console.log('Redux Thunk: Fetching products với page:', page, 'và filters:', filters);
+      return await api.fetchProducts(filters, page);
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Failed to fetch products');
     }
@@ -113,6 +114,45 @@ export const createProductReview = createAsyncThunk(
     } catch (error: any) {
       return rejectWithValue(error.response?.data?.message || 'Failed to create review');
     }
+  }
+);
+
+// Thêm thunks cho setFilters và setPage để tự động fetch products
+export const setFiltersAndFetch = createAsyncThunk(
+  'products/setFiltersAndFetch',
+  async (filters: ProductFilters, { dispatch, getState }) => {
+    // 1. Cập nhật filters
+    dispatch(setFilters(filters));
+    
+    // 2. Lấy state sau khi đã cập nhật
+    const state = getState() as { products: ProductsState };
+    
+    // 3. Fetch products với filters và page đã cập nhật
+    await dispatch(fetchProducts({ 
+      filters: state.products.filters, 
+      page: state.products.page 
+    }));
+    
+    return filters;
+  }
+);
+
+export const setPageAndFetch = createAsyncThunk(
+  'products/setPageAndFetch',
+  async (page: number, { dispatch, getState }) => {
+    // 1. Cập nhật page
+    dispatch(setPage(page));
+    
+    // 2. Lấy state sau khi đã cập nhật
+    const state = getState() as { products: ProductsState };
+    
+    // 3. Fetch products với filters và page đã cập nhật
+    await dispatch(fetchProducts({ 
+      filters: state.products.filters, 
+      page 
+    }));
+    
+    return page;
   }
 );
 
